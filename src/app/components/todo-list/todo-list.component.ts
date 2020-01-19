@@ -20,7 +20,7 @@ export class TodoListComponent {
     this.outShowDetails.emit(todoItem);
   }
 
-  trackByNo(index: number, todoItem: TodoItem) {
-    return todoItem.no;
+  trackById(index: number, todoItem: TodoItem) {
+    return todoItem.id;
   }
 }

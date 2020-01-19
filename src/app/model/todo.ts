@@ -1,10 +1,6 @@
 export interface TodoItem {
-  no: string;
+  id: number;
   title: string;
   description: string;
   done: boolean;
-}
-
-export interface TodoMap {
-  [k: string]: TodoItem;
 }

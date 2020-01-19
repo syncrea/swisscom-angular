@@ -2,6 +2,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TodoItem} from '../../model/todo';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TodoService} from '../../service/todo.service';
+import {Observable} from 'rxjs';
+import {switchMap, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-details-container',
@@ -10,19 +12,23 @@ import {TodoService} from '../../service/todo.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoDetailsContainerComponent {
-  todoItem: TodoItem;
+  todoItem: Observable<TodoItem>;
 
   constructor(private todoService: TodoService,
               private router: Router,
               private route: ActivatedRoute) {
-    route.params
-      .subscribe((params) => {
-        this.todoItem = this.todoService.getTodo(params.no);
-      });
+    this.todoItem = route.params
+      .pipe(
+        switchMap(params => todoService.loadTodo(params.id))
+      );
   }
 
   updateTodo(data: any) {
-    this.todoService.updateTodo(this.route.snapshot.params.no, data);
-    this.router.navigate(['/todos']);
+    this.route.params
+      .pipe(
+        take(1),
+        switchMap((params) => this.todoService.updateTodo(params.id, data))
+      )
+      .subscribe(() => this.router.navigate(['/todos']));
   }
 }

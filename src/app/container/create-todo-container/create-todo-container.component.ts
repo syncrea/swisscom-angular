@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {Router} from '@angular/router';
 import {TodoService} from '../../service/todo.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-todo-container',
@@ -13,7 +14,8 @@ export class CreateTodoContainerComponent {
               private router: Router) {}
 
   createTodo(title: string, description: string) {
-    this.todoService.createTodo(title, description);
-    this.router.navigate(['/todos']);
+    this.todoService.createTodo(title, description)
+      .pipe(take(1))
+      .subscribe(() => this.router.navigate(['/todos']));
   }
 }

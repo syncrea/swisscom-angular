@@ -1,57 +1,39 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {TodoItem} from '../model/todo';
+import {Observable, of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class TodoService {
-  todos: TodoItem[] = [{
-    no: '1',
-    title: 'Todo 1',
-    description: 'Todo 1 Description',
-    done: true
-  }, {
-    no: '2',
-    title: 'Todo 2',
-    description: 'Todo 2 Description',
-    done: false
-  }, {
-    no: '3',
-    title: 'Todo 3',
-    description: 'Todo 3 Description',
-    done: false
-  }];
-
-  getTodos(): TodoItem[] {
-    return this.todos;
+  loadTodos(): Observable<TodoItem[]> {
+    // TODO: Create the necessary call to the backend
+    // Examples: https://angular.io/tutorial/toh-pt6
+    // URL: GET /api/todos
+    return of([]);
   }
 
-  getTodo(no: string): TodoItem {
-    return this.todos.find((todo) => todo.no === no) || <TodoItem>{};
+  loadTodo(id: number): Observable<TodoItem> {
+    // TODO: Create the necessary call to the backend
+    // Examples: https://angular.io/tutorial/toh-pt6
+    // URL: GET /api/todos/:id
+    return of({} as TodoItem);
   }
 
-  private getNextNo() {
-    return `${
-      this.todos.reduce((n, todo) => +todo.no > +n ? +todo.no : +n, 0) + 1
-    }`;
+  createTodo(title: string, description: string): Observable<TodoItem> {
+    // TODO: Create the necessary call to the backend
+    // Examples: https://angular.io/tutorial/toh-pt6
+    // URL: POST /api/todos
+    // Data: {title: string; description: string; done: boolean}
+    return of({} as TodoItem);
   }
 
-  createTodo(title: string, description: string): void {
-    this.todos = [
-      ...this.todos, {
-        no: this.getNextNo(),
-        done: false,
-        title,
-        description
-      }
-    ];
+  updateTodo(id: number, data: any): Observable<TodoItem> {
+    // TODO: Create the necessary call to the backend
+    // Examples: https://angular.io/tutorial/toh-pt6
+    // URL: POST /api/todos/:id
+    // Data: {title: string; description: string; done: boolean}
+    return of({} as TodoItem);
   }
 
-  updateTodo(no: string, data: Partial<TodoItem>): void {
-    const index = this.todos.findIndex((todo) => todo.no === no);
-    if (index !== -1) {
-      this.todos[index] = {
-        ...this.todos[index],
-        ...data
-      };
-    }
-  }
+  constructor(@Inject(HttpClient) private http: HttpClient) {}
 }
